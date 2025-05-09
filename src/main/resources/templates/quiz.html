@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quiz</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Quiz for Lesson: [[${lesson.title}]]</h1>
+        <form th:action="@{'/quiz/' + ${lesson.id} + '/submit'}" method="post">
+            <div th:each="quiz : ${quizzes}" class="mb-4">
+                <h4 th:text="${quiz.question}"></h4>
+                <div th:each="option : ${#strings.arraySplit(quiz.options, ',')}">
+                    <div class="form-check">
+                        <input type="radio" th:id="${quiz.id + '_' + option}" th:name="${quiz.id}" 
+                               th:value="${option}" class="form-check-input">
+                        <label th:for="${quiz.id + '_' + option}" th:text="${option}" class="form-check-label"></label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit Quiz</button>
+        </form>
+    </div>
+</body>
+</html>
