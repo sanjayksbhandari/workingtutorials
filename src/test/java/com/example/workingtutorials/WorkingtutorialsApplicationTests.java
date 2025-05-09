@@ -8,7 +8,7 @@ class WorkingtutorialsApplicationTests {
 
 	@Test
 	void contextLoads() {
-            System.out.println("Test Git");
+            System.out.println("Test Git changes");
 	}
 
 }
