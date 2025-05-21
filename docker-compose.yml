@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0 # Use a MySQL 8.0 image
+    environment:
+      MYSQL_ROOT_PASSWORD: Sanjay@1234 # Replace with a strong password
+      MYSQL_DATABASE: java_tutorials # Replace with your database name
+      MYSQL_USER: root # Replace with your MySQL user
+      MYSQL_PASSWORD: Sanjay@123 # Replace with your MySQL password
+    ports:
+      - '3306:3306' # Expose the MySQL port
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist data
+
+  web:
+    build: . # Build the image from the Dockerfile in the current directory
+    ports:
+      - '8080:8080' # Expose the Spring Boot port
+    depends_on:
+      - mysql # Start mysql before web
+    environment: #add environment variables
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/java_tutorials #same as mysql service name
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Sanjay@123
+volumes:
+  mysql_data: #named volumes
