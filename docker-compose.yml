@@ -1,33 +1,13 @@
 version: '3.8'
 
 services:
-  mysql_db:
-    image: mysql:8
-    container_name: "mysql"
-    environment:
-      MYSQL_ROOT_PASSWORD: "Sanjay@123"
-      MYSQL_DATABASE: "java_tutorials"
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./db_init:/docker-entrypoint-initdb.d
-      - mysql_data:/var/lib/mysql
-    networks:
-      - java-javatutorials-nw
-    healthcheck: 
-        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pSanjay@123"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-        start_period: 60s
-
   java-app:
     build: .
     container_name: "javatutorials"
     ports:
       - "8090:8090"
     depends_on:
-      - mysql_db
+      - mysql-db
     networks:
       - java-javatutorials-nw
     environment:
@@ -41,6 +21,28 @@ services:
         timeout: 5s
         retries: 5
         start_period: 60s
+
+  mysql-db:
+    image: mysql:8
+    container_name: "mysql-tutorial"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Sanjay@123"
+      MYSQL_DATABASE: "java_tutorials"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db_init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    networks:
+      - java-javatutorials-nw
+    restart: always
+    healthcheck: 
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pSanjay@123"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 60s
+        
 volumes:
   mysql_data:
 

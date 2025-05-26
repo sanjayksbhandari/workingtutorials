@@ -9,7 +9,7 @@ WORKDIR /myapp
 # copy source code from local to container
 COPY . /myapp
 
-# build application and skipo test cases
+# build application and skip test cases
 
 RUN mvn clean install -DskipTests=true
 
