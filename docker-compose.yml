@@ -1,35 +1,47 @@
 version: '3.8'
 
 services:
-  mysql:
+  mysql_db:
     image: mysql:8
-    container_name: mysql
+    container_name: "mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: Sanjay@123
-      MYSQL_DATABASE: java_tutorials
+      MYSQL_ROOT_PASSWORD: "Sanjay@123"
+      MYSQL_DATABASE: "java_tutorials"
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./mysql_data:/var/lib/mysql
     networks:
-      - app-network
+      - java-javatutorials-nw
+    healthcheck: 
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pSanjay@123"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 60s
 
-  app:
+  java-app:
     build: .
-    container_name: java_spring_app
+    container_name: "javatutorials"
     ports:
       - "8090:8090"
     depends_on:
-      - mysql
+      - mysql_db
     networks:
-      - app-network
+      - java-javatutorials-nw
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/java_tutorials
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Sanjay@123
-
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/java_tutorials"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "Sanjay@123"
+    restart: always
+    healthcheck: 
+        test: ["CMD_SHELL", "curl -f http://localhost:8090 || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 60s
 volumes:
   mysql_data:
 
 networks:
-  app-network:
+  java-javatutorials-nw:
