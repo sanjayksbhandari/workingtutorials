@@ -11,7 +11,7 @@ services:
     networks:
       - java-javatutorials-nw
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/java_tutorials"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-db:3306/java_tutorials"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "Sanjay@123"
     restart: always
