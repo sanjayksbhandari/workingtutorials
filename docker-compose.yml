@@ -10,7 +10,8 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - ./db_init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
     networks:
       - java-javatutorials-nw
     healthcheck: 
@@ -35,7 +36,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: "Sanjay@123"
     restart: always
     healthcheck: 
-        test: ["CMD_SHELL", "curl -f http://localhost:8090 || exit 1"]
+        test: ["CMD-SHELL", "curl -f http://localhost:8090 || exit 1"]
         interval: 10s
         timeout: 5s
         retries: 5
